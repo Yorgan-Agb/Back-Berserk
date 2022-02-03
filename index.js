@@ -1,9 +1,12 @@
 const connection = require('./db-config')
 const express = require('express')
+const cors = require('cors')
 const app = express()
+
 const port = 4242
 
-app.use(express.json())
+app.use(cors())
+
 
 app.get('/BerserkShop', (req, res) => {
     connection.query('SELECT * FROM annonces ORDER BY RAND()', (err, result)=> {
