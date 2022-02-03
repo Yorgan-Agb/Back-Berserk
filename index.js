@@ -1,11 +1,11 @@
-const express = require('express')
 const connection = require('./db-config')
+const express = require('express')
 const cors = require('cors')
 const app = express()
+
 const port = 4242
 
 app.use(cors())
-
 
 app.get('/BerserkShop', (req, res) => {
     connection.query('SELECT * FROM annonces ORDER BY RAND()', (err, result)=> {
@@ -28,6 +28,7 @@ app.get('/BerserkShop/filter/', (req, res) => {
         }
     })
 })
+
 
 app.get('/BerserkShop/categories/:id', (req, res) => {
     const categorieId = req.params.id;
@@ -77,23 +78,21 @@ app.get('/BerserkShop/dates/:id', (req, res) => {
     )
 });
 
-app.post('/BerserkShop/annonce/post', (req, res)=> {
-    res.send('ça marche igo')
-    const {name, prix, date, image, type, description} = req.body
-    connection.query(
-        'INSERT INTO annonce(name, prix, date, image, type, description) VALUES (?,?,?,?,?,?)',[name, prix, date, image, type, description],
+app.post('/BerserkShop/annonce/post', (req, res) => {
+
+    const {prix, dates_id, name, image, describe, categories_id, etats_id} = req.body
+    const sql = "INSERT INTO bersekrshop.annonces (prix, name, image, describe, categories_id, etats_id, dates_id) VALUES (?, ?, ?,?,?,?,?)"
+
+    connection.query(sql,[prix, name, image, describe, categories_id, etats_id, dates_id],
         (err, result) => {
             if (err) {
-                res.status(500).send('Error saving users')
+                res.status(500).send(err)
             } else {
-                res.status(200).send('User sucessfuly saved')
+                res.status(200).send('Annonce sucessfuly saved')
             }
         }
     )
 })
-
-
-
 
 app.listen(port, (err)=> {
     if (err) {
