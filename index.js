@@ -5,7 +5,7 @@ const port = 4242
 
 
 app.get('/BerserkShop', (req, res) => {
-    connection.query('SELECT * FROM annonces LIMIT 5', (err, result)=> {
+    connection.query('SELECT * FROM annonces ORDER BY RAND()', (err, result)=> {
         if (err) {
             console.error(err)
             res.status(500).send('Error retrieving data from database')
@@ -15,8 +15,8 @@ app.get('/BerserkShop', (req, res) => {
     })
 })
 
-app.get('/BerserkShop/filter', (req, res) => {
-    connection.query('SELECT * FROM annonces ORDER BY id  LIMIT 5', (err, result)=> {
+app.get('/BerserkShop/filter/', (req, res) => {
+    connection.query('SELECT * FROM bersekrshop.categories WHERE id = ?', (err, result)=> {
         if (err) {
             console.error(err)
             res.status(500).send('Error retrieving data from database')
