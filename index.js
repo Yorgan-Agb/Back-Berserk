@@ -7,6 +7,17 @@ const port = 4242
 
 app.use(cors())
 
+app.get('/BerserkShop/annonces', (req, res) => {
+    connection.query('SELECT * FROM annonces', (err, result)=> {
+        if (err) {
+            console.error(err)
+            res.status(500).send('Error retrieving data from database')
+        } else {
+            res.status(200).json(result)
+        }
+    })
+})
+
 app.get('/BerserkShop', (req, res) => {
     connection.query('SELECT * FROM annonces ORDER BY RAND()', (err, result)=> {
         if (err) {
