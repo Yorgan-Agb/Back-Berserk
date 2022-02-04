@@ -5,6 +5,7 @@ const app = express()
 
 const port = 4242
 
+app.use(express.json())
 app.use(cors())
 
 app.get('/BerserkShop/annonces', (req, res) => {
@@ -29,8 +30,8 @@ app.get('/BerserkShop', (req, res) => {
     })
 })
 
-app.get('/BerserkShop/filter/', (req, res) => {
-    connection.query('SELECT * FROM bersekrshop.categories WHERE id = ?', (err, result)=> {
+app.get('/BerserkShop/filter', (req, res) => {
+    connection.query('SELECT * FROM annonces', (err, result)=> {
         if (err) {
             console.error(err)
             res.status(500).send('Error retrieving data from database')
@@ -92,7 +93,7 @@ app.get('/BerserkShop/dates/:id', (req, res) => {
 app.post('/BerserkShop/annonce/post', (req, res) => {
 
     const {prix, dates_id, name, image, describe, categories_id, etats_id} = req.body
-    const sql = "INSERT INTO bersekrshop.annonces (prix, name, image, describe, categories_id, etats_id, dates_id) VALUES (?, ?, ?,?,?,?,?)"
+    const sql = "INSERT INTO bersekrshop.annonces (prix, name, image, describe, categories_id, etats_id, dates_id) VALUES (?,?,?,?,?,?,?)"
 
     connection.query(sql,[prix, name, image, describe, categories_id, etats_id, dates_id],
         (err, result) => {
